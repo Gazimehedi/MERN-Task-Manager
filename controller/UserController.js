@@ -3,7 +3,7 @@ const OTPModel = require('../models/OTPModel');
 const {hashPassword,checkPassword, generateToken} = require('../helpers/auth');
 const jwt = require('jsonwebtoken');
 const SendMail = require('../helpers/sendEmail');
-exports.Login = (req,res) => {
+exports.Login = async (req,res) => {
     try{
         const {email,password} = req.body;
         // Validation
@@ -14,37 +14,30 @@ exports.Login = (req,res) => {
             res.status(400).json({message:"Password is required and up to 6 characters"});
         }
         // Check user email
-        Users.aggregate([
-            {$match:{email:email}},
-            {$project: {_id:0,email:1,firstName:1,lastName:1,password:1,mobile:1,photo:1}}
-        ],(err,data)=>{
-            if(err){
-                res.status(400).json({status: "fail", message: "User email doesn't match"});
-            }else {
-                if (data.length > 0) {
-                    const isMatchPass = checkPassword(password, data[0].password).then(result=>{
-                       if(result){
-                           let payload = {exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60), data: data[0].email};
-                               let token = jwt.sign(payload, process.env.JWT_SECRET);
-                               res.status(200).json({
-                                   data: {
-                                       firstName: data[0].firstName,
-                                       lastName: data[0].lastName,
-                                       email: data[0].email,
-                                       mobile: data[0].mobile,
-                                       photo: data[0].photo
-                                   },
-                                   token
-                               });
-                       }else{
-                           res.status(400).json({status:'error',message:'Password is wrong'});
-                       }
-                    });
-                }
+        const IfUser = await Users.findOne({email});
+        if(IfUser){
+            const isMatchPass = await checkPassword(password, IfUser.password);
+            if(isMatchPass){
+                let payload = {exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60), data: IfUser.email};
+                let token = await jwt.sign(payload, process.env.JWT_SECRET);
+                res.status(200).json({
+                    data: {
+                        firstName: IfUser.firstName,
+                        lastName: IfUser.lastName,
+                        email: IfUser.email,
+                        mobile: IfUser.mobile,
+                        photo: IfUser.photo
+                    },
+                    token
+                });
+            }else{
+                res.status(400).json({status:'error',message:'Password is wrong'});
             }
-        });
+        }else{
+            res.status(400).json({status: "fail", message: "User email doesn't match"});
+        }
     }catch (err) {
-        res.status(400).json(err);
+        res.status(400).json({error: 'Internal server error!'});
     }
 }
 exports.Register = async (req,res) => {
@@ -52,21 +45,21 @@ exports.Register = async (req,res) => {
         const {firstName,lastName,email,password} = req.body;
         // Validation
         if(!firstName.trim()){
-            res.status(400).json({message:"First Name is required"});
+            res.status(200).json({status:'fail',message:"First Name is required"});
         }
         if(!lastName.trim()){
-            res.status(400).json({message:"Last Name is required"});
+            res.status(200).json({status:'fail',message:"Last Name is required"});
         }
         if(!email.trim()){
-            res.status(400).json({message:"Email is required"});
+            res.status(200).json({status:'fail',message:"Email is required"});
         }
         if(!password.trim() && password.length >= 6){
-            res.status(400).json({message:"Password is required and up to 6 characters"});
+            res.status(200).json({status:'fail',message:"Password is required and up to 6 characters"});
         }
         // Check user Email
         const ifExists = await Users.findOne({email});
         if(ifExists){
-            res.status(400).json({error:"Email is already taken!"});
+            res.status(200).json({status:'fail',message:"Email is already taken!"});
         }
         // hashed password
         const hashed = await hashPassword(password);
@@ -75,6 +68,7 @@ exports.Register = async (req,res) => {
         const reqBody = req.body;
         const user = await new Users(reqBody).save();
         res.status(201).json({
+            status:'success',
             message:"Registration successfully",
             data: {
                 username: user.username,
