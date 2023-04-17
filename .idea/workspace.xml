@@ -2,8 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5d26e580-412f-46cf-8019-640471bce48e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ApiRequest/ApiRequest.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ApiRequest/ApiRequest.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/MasterLayout/Fullscreen-Loader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/MasterLayout/Fullscreen-Loader.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/MasterLayout/MasterLayout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/MasterLayout/MasterLayout.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/helpers/FormHelper.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/helpers/FormHelper.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/helpers/SessionHelper.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/helpers/SessionHelper.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/redux/store/store.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/store/store.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controller/UserController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controller/UserController.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -63,6 +71,10 @@
       <workItem from="1681445091914" duration="731000" />
       <workItem from="1681445922585" duration="9218000" />
       <workItem from="1681490893862" duration="6577000" />
+      <workItem from="1681531465424" duration="11811000" />
+      <workItem from="1681622501836" duration="9062000" />
+      <workItem from="1681710946861" duration="2292000" />
+      <workItem from="1681747710482" duration="344000" />
     </task>
     <servers />
   </component>

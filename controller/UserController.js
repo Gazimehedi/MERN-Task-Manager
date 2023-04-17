@@ -118,7 +118,7 @@ exports.profileDetails = (req,res) => {
 }
 exports.recoverVerifyEmail = async (req,res) => {
     try{
-        const {email} = req.headers;
+        const {email} = req.body;
         const OTPCode = Math.floor(100000+Math.random()*900000);
         const userCount = await Users.aggregate([{$match:{email:email}}, {$count: 'total'}]);
         if(userCount.length>0) {
@@ -126,7 +126,7 @@ exports.recoverVerifyEmail = async (req,res) => {
             const SendEmail = SendMail(email, "Your PIN Code is= " + OTPCode, "Task Manager PIN Verification");
             res.status(200).json({status:'success',message: 'Please check email for reset your password'});
         }else{
-            res.status(404).json({status:'fail',message: 'user not found!'});
+            res.status(200).json({status:'fail',message: 'user not found!'});
         }
     }catch (err) {
         console.log(err);
@@ -143,7 +143,7 @@ exports.recoverVerifyOTP = async (req,res) => {
            const updateOTP = await OTPModel.updateOne({email: email, otp: otp,status:status},{email: email, otp: otp,status:statusUpdate});
            res.status(200).json({status:'success',data: updateOTP});
         }else{
-            res.status(404).json({status:'fail',message: 'Invalid OTP code!'});
+            res.status(200).json({status:'fail',message: 'Invalid OTP code!'});
         }
     }catch (err) {
         res.status(400).json({error: 'Internal server error!'});
@@ -161,7 +161,7 @@ exports.recoverResetPass = async (req,res) => {
             const PassUpdate = await Users.updateOne({email: email},{password: hashed});
             res.status(200).json({status:'success',data: PassUpdate});
         }else{
-            res.status(400).json({status:'fail',message: 'Invalid Request!'});
+            res.status(200).json({status:'fail',message: 'Invalid Request!'});
         }
     }catch (err) {
         res.status(400).json({error: 'Internal server error!'});
